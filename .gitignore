@@ -1,0 +1,44 @@
+# ---- Node / Next.js / Backend ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+.next/
+out/
+build/
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+backend/debug.log
+frontend/debug.log
+
+# Prisma
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+
+# Puppeteer / scraper cache
+scraper/.puppeteer
+scraper/tmp/
+scraper/udyam-step1.json
+scraper/udyam-step2.json
+
+# Editor / OS junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Docker volumes 
+db-data/
