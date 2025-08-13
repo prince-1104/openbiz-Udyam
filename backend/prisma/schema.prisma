@@ -7,9 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model Registration {
-  id        Int      @id @default(autoincrement())
-  aadhaar   String
-  pan       String
-  createdAt DateTime @default(now())
+  id                 Int      @id @default(autoincrement())
+  aadhaar            String?  @db.VarChar(12)
+  aadhaar_name       String?
+  aadhaar_otp        String?  @db.VarChar(6)
+  pan                String?  @db.VarChar(10)
+  organisation_name  String?
+  createdAt          DateTime @default(now())
 }
