@@ -1,0 +1,32 @@
+{
+    "title": "Udyam Registration - Step 1",
+    "fields": [
+      {
+        "key": "aadhaar",
+        "type": "text",
+        "label": "Aadhaar Number",
+        "required": true,
+        "pattern": "^[0-9]{12}$",
+        "placeholder": "Enter 12-digit Aadhaar",
+        "example": "123456789012"
+      },
+      {
+        "key": "aadhaar_name",
+        "type": "text",
+        "label": "Name as per Aadhaar",
+        "required": true,
+        "placeholder": "Enter full name",
+        "example": "John Kumar"
+      },
+      {
+        "key": "aadhaar_otp",
+        "type": "text",
+        "label": "OTP",
+        "required": true,
+        "pattern": "^[0-9]{6}$",
+        "placeholder": "Enter 6-digit OTP",
+        "example": "123456"
+      }
+    ]
+  }
+  

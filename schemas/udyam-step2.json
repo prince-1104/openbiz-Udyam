@@ -1,0 +1,23 @@
+{
+    "title": "Udyam Registration - Step 2",
+    "fields": [
+      {
+        "key": "pan",
+        "type": "text",
+        "label": "PAN Number",
+        "required": true,
+        "pattern": "^[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}$",
+        "placeholder": "ABCDE1234F",
+        "example": "ABCDE1234F"
+      },
+      {
+        "key": "organisation_name",
+        "type": "text",
+        "label": "Organisation Name",
+        "required": true,
+        "placeholder": "Enter registered business name",
+        "example": "ABC Traders Pvt Ltd"
+      }
+    ]
+  }
+  
