@@ -1,0 +1,8 @@
+[build]
+builder = "NIXPACKS"
+
+[env]
+PORT = "4000"
+
+[build.args]
+NIXPACKS_SUBDIR = "backend"
