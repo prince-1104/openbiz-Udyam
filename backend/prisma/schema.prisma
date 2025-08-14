@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,13 +10,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model UdyamRegistration {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-model Registration {
-  id                 Int      @id @default(autoincrement())
-  aadhaar            String?  @db.VarChar(12)
-  aadhaar_name       String?
-  aadhaar_otp        String?  @db.VarChar(6)
-  pan                String?  @db.VarChar(10)
-  organisation_name  String?
-  createdAt          DateTime @default(now())
+  // Step 1: Aadhaar + OTP Validation
+  aadhaarNumber String @unique
+  mobileNumber  String
+  otpVerified   Boolean @default(false)
+  step1Completed Boolean @default(false)
+
+  // Step 2: PAN Validation & Business Details
+  panNumber           String?
+  businessName        String?
+  ownerName           String?
+  dateOfBirth         DateTime?
+  gender              String?
+  socialCategory      String?
+  physicallyHandicapped Boolean @default(false)
+  exServiceman        Boolean @default(false)
+  step2Completed      Boolean @default(false)
+
+  // Registration Status
+  registrationStatus  RegistrationStatus @default(PENDING)
+  udyamNumber         String? @unique
+  submittedAt         DateTime?
+
+  // Validation and Verification
+  isVerified          Boolean @default(false)
+  verificationNotes   String?
+
+  @@map("udyam_registrations")
+}
+
+enum RegistrationStatus {
+  PENDING
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  COMPLETED
 }

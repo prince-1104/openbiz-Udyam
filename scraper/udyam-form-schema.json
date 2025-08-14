@@ -1,0 +1,162 @@
+{
+  "steps": [
+    {
+      "stepNumber": 1,
+      "title": "Aadhaar + OTP Validation",
+      "fields": [
+        {
+          "id": "txtAadhaar",
+          "name": "txtAadhaar",
+          "type": "text",
+          "label": "Aadhaar Number",
+          "placeholder": "Enter 12 digit Aadhaar Number",
+          "required": true,
+          "validation": {
+            "pattern": "^[0-9]{12}$",
+            "minLength": 12,
+            "maxLength": 12,
+            "format": "12-digit Aadhaar number"
+          }
+        },
+        {
+          "id": "txtMobile",
+          "name": "txtMobile",
+          "type": "text",
+          "label": "Mobile Number",
+          "placeholder": "Enter 10 digit Mobile Number",
+          "required": true,
+          "validation": {
+            "pattern": "^[6-9][0-9]{9}$",
+            "minLength": 10,
+            "maxLength": 10,
+            "format": "10-digit mobile number starting with 6-9"
+          }
+        },
+        {
+          "id": "txtOTP",
+          "name": "txtOTP",
+          "type": "text",
+          "label": "OTP",
+          "placeholder": "Enter OTP received on mobile",
+          "required": true,
+          "validation": {
+            "pattern": "^[0-9]{6}$",
+            "minLength": 6,
+            "maxLength": 6,
+            "format": "6-digit OTP"
+          }
+        },
+        {
+          "id": "btnGenerateOTP",
+          "name": "btnGenerateOTP",
+          "type": "button",
+          "label": "Generate OTP",
+          "required": false
+        },
+        {
+          "id": "btnVerifyOTP",
+          "name": "btnVerifyOTP",
+          "type": "button",
+          "label": "Verify OTP",
+          "required": false
+        }
+      ]
+    },
+    {
+      "stepNumber": 2,
+      "title": "PAN Validation & Business Details",
+      "fields": [
+        {
+          "id": "txtPAN",
+          "name": "txtPAN",
+          "type": "text",
+          "label": "PAN Number",
+          "placeholder": "Enter 10 digit PAN Number",
+          "required": true,
+          "validation": {
+            "pattern": "^[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}$",
+            "minLength": 10,
+            "maxLength": 10,
+            "format": "PAN format: ABCDE1234F"
+          }
+        },
+        {
+          "id": "txtBusinessName",
+          "name": "txtBusinessName",
+          "type": "text",
+          "label": "Business Name",
+          "placeholder": "Enter Business Name as per PAN",
+          "required": true,
+          "validation": {
+            "minLength": 3,
+            "maxLength": 100
+          }
+        },
+        {
+          "id": "txtOwnerName",
+          "name": "txtOwnerName",
+          "type": "text",
+          "label": "Owner Name",
+          "placeholder": "Enter Owner Name as per PAN",
+          "required": true,
+          "validation": {
+            "minLength": 3,
+            "maxLength": 100
+          }
+        },
+        {
+          "id": "txtDOB",
+          "name": "txtDOB",
+          "type": "date",
+          "label": "Date of Birth",
+          "required": true,
+          "validation": {
+            "format": "YYYY-MM-DD"
+          }
+        },
+        {
+          "id": "ddlGender",
+          "name": "ddlGender",
+          "type": "select",
+          "label": "Gender",
+          "required": true,
+          "options": ["Male", "Female", "Other"]
+        },
+        {
+          "id": "ddlSocialCategory",
+          "name": "ddlSocialCategory",
+          "type": "select",
+          "label": "Social Category",
+          "required": true,
+          "options": ["General", "OBC", "SC", "ST", "EWS"]
+        },
+        {
+          "id": "chkPhysicallyHandicapped",
+          "name": "chkPhysicallyHandicapped",
+          "type": "checkbox",
+          "label": "Physically Handicapped",
+          "required": false
+        },
+        {
+          "id": "chkExServiceman",
+          "name": "chkExServiceman",
+          "type": "checkbox",
+          "label": "Ex-Serviceman",
+          "required": false
+        },
+        {
+          "id": "btnNext",
+          "name": "btnNext",
+          "type": "button",
+          "label": "Next",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "scrapedAt": "2025-01-13T10:00:00.000Z",
+    "url": "https://udyamregistration.gov.in/UdyamRegistration.aspx",
+    "totalFields": 14
+  }
+}

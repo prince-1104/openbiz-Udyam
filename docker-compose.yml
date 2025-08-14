@@ -1,14 +1,78 @@
 version: '3.8'
+
 services:
-  db:
-    image: postgres:15
-    restart: always
+  postgres:
+    image: postgres:15-alpine
+    container_name: udyam-postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: openbiz
-    ports: ["5432:5432"]
+      POSTGRES_DB: udyam_db
+      POSTGRES_USER: udyam_user
+      POSTGRES_PASSWORD: udyam_password
+    ports:
+      - "5432:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - udyam-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U udyam_user -d udyam_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: udyam-backend
+    environment:
+      DATABASE_URL: postgresql://udyam_user:udyam_password@postgres:5432/udyam_db
+      NODE_ENV: production
+      PORT: 4000
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - udyam-network
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: udyam-frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - udyam-network
+    restart: unless-stopped
+
+  # Scraper 
+  scraper:
+    build:
+      context: ./scraper
+      dockerfile: Dockerfile
+    container_name: udyam-scraper
+    environment:
+      NODE_ENV: development
+    networks:
+      - udyam-network
+    profiles:
+      - dev
+
 volumes:
-  db-data:
+  postgres_data:
+
+networks:
+  udyam-network:
+    driver: bridge

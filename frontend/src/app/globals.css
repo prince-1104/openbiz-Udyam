@@ -24,3 +24,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Improve placeholder and input text contrast */
+input::placeholder, textarea::placeholder {
+  color: #6b7280; /* Tailwind gray-500 */
+  opacity: 1; /* Ensure visibility */
+}
+
+input, textarea, select {
+  color: #111827; /* Tailwind gray-900 for entered text */
+  background-color: #ffffff; /* Ensure white background */
+}
+
+/* When disabled, keep placeholder visible enough */
+input:disabled::placeholder {
+  color: #9ca3af; /* gray-400 */
+}

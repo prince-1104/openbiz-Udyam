@@ -1,102 +1,192 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { FileText, UserCheck, Building2, CheckCircle } from 'lucide-react';
+
+interface FormStep {
+  stepNumber: number;
+  title: string;
+  fields: any[];
+}
+
+interface FormSchema {
+  steps: FormStep[];
+  metadata: {
+    scrapedAt: string;
+    url: string;
+    totalFields: number;
+  };
+}
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [formSchema, setFormSchema] = useState<FormSchema | null>(null);
+  const [loading, setLoading] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const loadFormSchema = async () => {
+      try {
+        const response = await fetch('/udyam-form-schema.json');
+        const data = await response.json();
+        setFormSchema(data);
+      } catch (error) {
+        console.error('Error loading form schema:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFormSchema();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Udyam Registration Form...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-3">
+              <Building2 className="h-8 w-8 text-indigo-600" />
+              <h1 className="text-2xl font-bold text-gray-900">Udyam Registration</h1>
+            </div>
+            <div className="text-sm text-gray-500">
+              Official Portal Clone
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Progress Tracker */}
+        <div className="mb-8">
+          <div className="flex items-center justify-center space-x-4">
+            {formSchema?.steps.map((step, index) => (
+              <div key={step.stepNumber} className="flex items-center">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-600 text-white font-semibold">
+                  {step.stepNumber}
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-gray-900">{step.title}</h3>
+                  <p className="text-xs text-gray-500">{step.fields.length} fields</p>
+                </div>
+                {index < formSchema.steps.length - 1 && (
+                  <div className="ml-4 w-16 h-0.5 bg-gray-300"></div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Welcome Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Welcome to Udyam Registration
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Complete your MSME registration in just a few simple steps. 
+            Our streamlined process makes it easy to get your business registered.
+          </p>
+        </div>
+
+        {/* Form Steps */}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {formSchema?.steps.map((step) => (
+            <div key={step.stepNumber} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div className="flex items-center mb-4">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                  {step.stepNumber === 1 ? (
+                    <UserCheck className="h-5 w-5 text-indigo-600" />
+                  ) : (
+                    <FileText className="h-5 w-5 text-indigo-600" />
+                  )}
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Step {step.stepNumber}</h3>
+                  <p className="text-sm text-gray-600">{step.title}</p>
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <p className="text-sm text-gray-600 mb-3">
+                  {step.stepNumber === 1 
+                    ? "Verify your identity using Aadhaar and mobile number"
+                    : "Enter your business details and PAN information"
+                  }
+                </p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                  {step.fields.length} form fields
+                </div>
+              </div>
+
+              <Link
+                href={`/step${step.stepNumber}`}
+                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors text-center block"
+              >
+                Start Step {step.stepNumber}
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {/* Features */}
+        <div className="mt-16 grid gap-8 md:grid-cols-3">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="h-8 w-8 text-green-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Easy Registration</h3>
+            <p className="text-gray-600">Simple step-by-step process with real-time validation</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Building2 className="h-8 w-8 text-blue-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Business Focused</h3>
+            <p className="text-gray-600">Designed specifically for MSME registration requirements</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FileText className="h-8 w-8 text-purple-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Secure & Reliable</h3>
+            <p className="text-gray-600">Your data is protected with industry-standard security</p>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center">
+            <p className="text-gray-400">
+              This is a demonstration application for Udyam registration form. 
+              For official registration, visit{' '}
+              <a 
+                href="https://udyamregistration.gov.in" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-indigo-400 hover:text-indigo-300 underline"
+              >
+                udyamregistration.gov.in
+              </a>
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   );
