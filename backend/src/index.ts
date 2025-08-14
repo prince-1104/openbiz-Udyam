@@ -17,7 +17,11 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:3000',
+    'https://*.vercel.app', // Allow Vercel domains
+    'https://*.railway.app' 
+  ],
   credentials: true
 }));
 
@@ -121,13 +125,13 @@ app.post('/api/step1/initiate', async (req: any, res: any) => {
     // For demo purposes, generate a random 6-digit OTP and return it in response
     const demoOTP = Math.floor(100000 + Math.random() * 900000).toString();
 
-    res.json({
-      message: 'Registration initiated successfully',
-      registrationId: registration.id,
-      step: 1,
-      demoOTP, 
-      
-    });
+          res.json({
+        message: 'Registration initiated successfully',
+        registrationId: registration.id,
+        step: 1,
+        demoOTP,
+        note: 'This is a demo OTP. In production, this would be sent via SMS.'
+      });
 
   } catch (error: any) {
     if (error instanceof z.ZodError) {

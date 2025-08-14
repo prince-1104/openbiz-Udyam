@@ -1,33 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const zod_1 = require("zod");
+const { z } = require('zod');
 // Test validation schemas
-const step1Schema = zod_1.z.object({
-    aadhaarNumber: zod_1.z.string()
+const step1Schema = z.object({
+    aadhaarNumber: z.string()
         .length(12, 'Aadhaar number must be exactly 12 digits')
         .regex(/^[0-9]{12}$/, 'Aadhaar number must contain only digits'),
-    mobileNumber: zod_1.z.string()
+    mobileNumber: z.string()
         .length(10, 'Mobile number must be exactly 10 digits')
         .regex(/^[6-9][0-9]{9}$/, 'Mobile number must start with 6-9 and be 10 digits'),
 });
-const step2Schema = zod_1.z.object({
-    panNumber: zod_1.z.string()
+const step2Schema = z.object({
+    panNumber: z.string()
         .length(10, 'PAN number must be exactly 10 characters')
         .regex(/^[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}$/, 'Invalid PAN format. Expected format: ABCDE1234F'),
-    businessName: zod_1.z.string()
+    businessName: z.string()
         .min(3, 'Business name must be at least 3 characters')
         .max(100, 'Business name must be less than 100 characters'),
-    ownerName: zod_1.z.string()
+    ownerName: z.string()
         .min(3, 'Owner name must be at least 3 characters')
         .max(100, 'Owner name must be less than 100 characters'),
-    dateOfBirth: zod_1.z.string()
+    dateOfBirth: z.string()
         .min(1, 'Date of birth is required'),
-    gender: zod_1.z.string()
+    gender: z.string()
         .min(1, 'Gender selection is required'),
-    socialCategory: zod_1.z.string()
+    socialCategory: z.string()
         .min(1, 'Social category selection is required'),
-    physicallyHandicapped: zod_1.z.boolean().optional(),
-    exServiceman: zod_1.z.boolean().optional(),
+    physicallyHandicapped: z.boolean().optional(),
+    exServiceman: z.boolean().optional(),
 });
 describe('Step 1 Validation', () => {
     test('should validate correct Aadhaar number', () => {

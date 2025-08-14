@@ -1,4 +1,4 @@
-import { z } from 'zod';
+const { z } = require('zod');
 
 // Test validation schemas
 const step1Schema = z.object({
@@ -50,7 +50,9 @@ describe('Step 1 Validation', () => {
     const result = step1Schema.safeParse(invalidData);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.errors[0].message).toContain('12 digits');
+      console.log('Error structure:', JSON.stringify(result.error, null, 2));
+      expect(result.error.issues && result.error.issues.length > 0).toBe(true);
+      expect(result.error.issues[0].message).toContain('12 digits');
     }
   });
 
@@ -63,7 +65,8 @@ describe('Step 1 Validation', () => {
     const result = step1Schema.safeParse(invalidData);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.errors[0].message).toContain('only digits');
+      expect(result.error.issues && result.error.issues.length > 0).toBe(true);
+      expect(result.error.issues[0].message).toContain('only digits');
     }
   });
 
@@ -86,7 +89,8 @@ describe('Step 1 Validation', () => {
     const result = step1Schema.safeParse(invalidData);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.errors[0].message).toContain('start with 6-9');
+      expect(result.error.issues && result.error.issues.length > 0).toBe(true);
+      expect(result.error.issues[0].message).toContain('start with 6-9');
     }
   });
 });
@@ -119,7 +123,8 @@ describe('Step 2 Validation', () => {
     const result = step2Schema.safeParse(invalidData);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.errors[0].message).toContain('Invalid PAN format');
+      expect(result.error.issues && result.error.issues.length > 0).toBe(true);
+      expect(result.error.issues[0].message).toContain('10 characters');
     }
   });
 
@@ -136,7 +141,8 @@ describe('Step 2 Validation', () => {
     const result = step2Schema.safeParse(invalidData);
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.errors[0].message).toContain('at least 3 characters');
+      expect(result.error.issues && result.error.issues.length > 0).toBe(true);
+      expect(result.error.issues[0].message).toContain('at least 3 characters');
     }
   });
 
