@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -34,8 +34,8 @@ interface ScrapedData {
 }
 
 class UdyamScraper {
-  private browser: puppeteer.Browser | null = null;
-  private page: puppeteer.Page | null = null;
+  private browser: Browser | null = null;
+  private page: Page | null = null;
 
   async initialize() {
     this.browser = await puppeteer.launch({
